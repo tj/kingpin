@@ -74,7 +74,7 @@ func formatCmdUsage(app *ApplicationModel, cmd *CmdModel) string {
 }
 
 func formatFlag(haveShort bool, flag *FlagModel) string {
-	flagString := ""
+	flagString := "  "
 	if flag.Short != 0 {
 		flagString += fmt.Sprintf("-%c, --%s", flag.Short, flag.Name)
 	} else {
@@ -188,6 +188,9 @@ func (a *Application) UsageForContextWithTemplate(context *ParseContext, indent 
 		},
 		"Char": func(c rune) string {
 			return string(c)
+		},
+		"bold": func(s string) string {
+			return fmt.Sprintf("\033[1m%s\033[0m", s)
 		},
 	}
 	t, err := template.New("usage").Funcs(funcs).Parse(tmpl)

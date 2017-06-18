@@ -9,40 +9,42 @@ var DefaultUsageTemplate = `{{define "FormatCommand"}}\
 {{define "FormatCommands"}}\
 {{range .FlattenedCommands}}\
 {{if not .Hidden}}\
-  {{.FullCommand}}{{if .Default}}*{{end}}{{template "FormatCommand" .}}
-{{.Help|Wrap 4}}
+    {{printf "%-10s %s" .FullCommand .Help}}
 {{end}}\
 {{end}}\
 {{end}}\
 
 {{define "FormatUsage"}}\
 {{template "FormatCommand" .}}{{if .Commands}} <command> [<args> ...]{{end}}
-{{if .Help}}
-{{.Help|Wrap 0}}\
-{{end}}\
-
-{{end}}\
-
+{{end}}
 {{if .Context.SelectedCommand}}\
-usage: {{.App.Name}} {{.Context.SelectedCommand}}{{template "FormatUsage" .Context.SelectedCommand}}
+{{.Context.SelectedCommand.Help | Wrap 2}}
+  {{"Usage:" | bold}}
+
+    {{.App.Name}} {{.Context.SelectedCommand}}{{template "FormatUsage" .Context.SelectedCommand}}
 {{else}}\
-usage: {{.App.Name}}{{template "FormatUsage" .App}}
+  {{"Usage:" | bold}}
+
+    {{.App.Name}}{{template "FormatUsage" .App}}
 {{end}}\
 {{if .Context.Flags}}\
-Flags:
+  {{"Flags:" | bold}}
+
 {{.Context.Flags|FlagsToTwoColumns|FormatTwoColumns}}
 {{end}}\
 {{if .Context.Args}}\
-Args:
+  {{"Args:" | bold}}
+
 {{.Context.Args|ArgsToTwoColumns|FormatTwoColumns}}
 {{end}}\
 {{if .Context.SelectedCommand}}\
 {{if len .Context.SelectedCommand.Commands}}\
-Subcommands:
+  {{"Subcommands:" | bold}}
 {{template "FormatCommands" .Context.SelectedCommand}}
 {{end}}\
 {{else if .App.Commands}}\
-Commands:
+  {{"Commands:" | bold}}
+
 {{template "FormatCommands" .App}}
 {{end}}\
 `
