@@ -47,6 +47,18 @@ var DefaultUsageTemplate = `{{define "FormatCommand"}}\
 
 {{template "FormatCommands" .App}}
 {{end}}\
+{{define "Examples"}}\
+  {{"Examples:" | bold}}
+  {{range .}}
+    {{.Help}}
+    $ {{.Usage}}
+  {{end}}
+{{end}}\
+{{if .Context.SelectedCommand}}\
+{{template "Examples" .Context.SelectedCommand.Examples}}\
+{{else if .App.Examples}}\
+{{template "Examples" .App.Examples}}\
+{{end}}\
 `
 
 // Usage template where command's optional flags are listed separately

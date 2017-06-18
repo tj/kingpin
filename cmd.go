@@ -5,11 +5,31 @@ import (
 	"strings"
 )
 
+// Example of command usage.
+type Example struct {
+	Usage string
+	Help  string
+}
+
 type cmdMixin struct {
 	*flagGroup
 	*argGroup
 	*cmdGroup
 	actionMixin
+	examples []Example
+}
+
+// Example adds an example of the command's usage for help output.
+func (c *cmdMixin) Example(usage, help string) {
+	c.examples = append(c.examples, Example{
+		Usage: usage,
+		Help:  help,
+	})
+}
+
+// Examples returns the usage examples.
+func (c *cmdMixin) Examples() []Example {
+	return c.examples
 }
 
 // CmdCompletion returns completion options for arguments, if that's where

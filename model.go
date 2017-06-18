@@ -127,6 +127,7 @@ type CmdModel struct {
 	Depth       int
 	Hidden      bool
 	Default     bool
+	Examples    []Example
 	*FlagGroupModel
 	*ArgGroupModel
 	*CmdGroupModel
@@ -137,10 +138,11 @@ func (c *CmdModel) String() string {
 }
 
 type ApplicationModel struct {
-	Name    string
-	Help    string
-	Version string
-	Author  string
+	Name     string
+	Help     string
+	Version  string
+	Author   string
+	Examples []Example
 	*ArgGroupModel
 	*CmdGroupModel
 	*FlagGroupModel
@@ -155,6 +157,7 @@ func (a *Application) Model() *ApplicationModel {
 		FlagGroupModel: a.flagGroup.Model(),
 		ArgGroupModel:  a.argGroup.Model(),
 		CmdGroupModel:  a.cmdGroup.Model(),
+		Examples:       a.Examples(),
 	}
 }
 
@@ -223,5 +226,6 @@ func (c *CmdClause) Model() *CmdModel {
 		FlagGroupModel: c.flagGroup.Model(),
 		ArgGroupModel:  c.argGroup.Model(),
 		CmdGroupModel:  c.cmdGroup.Model(),
+		Examples:       c.Examples(),
 	}
 }
