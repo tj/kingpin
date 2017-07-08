@@ -48,11 +48,13 @@ var DefaultUsageTemplate = `{{define "FormatCommand"}}\
 {{template "FormatCommands" .App}}
 {{end}}\
 {{define "Examples"}}\
+{{if .}}\
   {{"Examples:" | bold}}
   {{range .}}
     {{.Help}}
     $ {{.Usage}}
   {{end}}
+{{end}}\
 {{end}}\
 {{if .Context.SelectedCommand}}\
 {{template "Examples" .Context.SelectedCommand.Examples}}\
