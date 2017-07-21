@@ -20,11 +20,13 @@ type cmdMixin struct {
 }
 
 // Example adds an example of the command's usage for help output.
-func (c *cmdMixin) Example(usage, help string) {
+func (c *cmdMixin) Example(usage, help string) *cmdMixin {
 	c.examples = append(c.examples, Example{
 		Usage: usage,
 		Help:  help,
 	})
+
+	return c
 }
 
 // Examples returns the usage examples.
