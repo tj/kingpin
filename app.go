@@ -251,6 +251,11 @@ func (a *Application) maybeHelp(context *ParseContext) {
 	}
 }
 
+// GetVersion returns the version.
+func (a *Application) GetVersion() string {
+	return a.version
+}
+
 // Version adds a --version flag for displaying the application version.
 func (a *Application) Version(version string) *Application {
 	a.version = version
