@@ -6,8 +6,9 @@ package kingpin
 type Action func(*ParseContext) error
 
 type actionMixin struct {
-	actions    []Action
-	preActions []Action
+	actions     []Action
+	preActions  []Action
+	postActions []Action
 }
 
 type actionApplier interface {
@@ -23,6 +24,10 @@ func (a *actionMixin) addPreAction(action Action) {
 	a.preActions = append(a.preActions, action)
 }
 
+func (a *actionMixin) addPostAction(action Action) {
+	a.postActions = append(a.postActions, action)
+}
+
 func (a *actionMixin) applyActions(context *ParseContext) error {
 	for _, action := range a.actions {
 		if err := action(context); err != nil {
@@ -35,6 +40,15 @@ func (a *actionMixin) applyActions(context *ParseContext) error {
 func (a *actionMixin) applyPreActions(context *ParseContext) error {
 	for _, preAction := range a.preActions {
 		if err := preAction(context); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (a *actionMixin) applyPostActions(context *ParseContext) error {
+	for _, postActions := range a.postActions {
+		if err := postActions(context); err != nil {
 			return err
 		}
 	}

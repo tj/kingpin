@@ -224,6 +224,11 @@ func (a *Application) Parse(args []string) (command string, err error) {
 			return "", nil
 		}
 	}
+
+	if err = a.applyPostActions(context); err != nil {
+		return "", err
+	}
+
 	return command, err
 }
 
@@ -284,9 +289,15 @@ func (a *Application) Action(action Action) *Application {
 	return a
 }
 
-// Action called after parsing completes but before validation and execution.
+// PreAction called after parsing completes but before validation and execution.
 func (a *Application) PreAction(action Action) *Application {
 	a.addPreAction(action)
+	return a
+}
+
+// PostAction called after execution.
+func (a *Application) PostAction(action Action) *Application {
+	a.addPostAction(action)
 	return a
 }
 
