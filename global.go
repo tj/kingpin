@@ -83,7 +83,7 @@ func UsageTemplate(template string) *Application {
 // MustParse can be used with app.Parse(args) to exit with an error if parsing fails.
 func MustParse(command string, err error) string {
 	if err != nil {
-		Fatalf("%s, try --help", err)
+		Fatalf("%s\n", err)
 	}
 	return command
 }
