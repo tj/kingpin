@@ -192,13 +192,13 @@ func (a *Application) Parse(args []string) (command string, err error) {
 		return "", parseErr
 	}
 
-	if err = a.setDefaults(context); err != nil {
+	if err := a.setDefaults(context); err != nil {
 		return "", err
 	}
 
 	selected, setValuesErr = a.setValues(context)
 
-	if err = a.applyPreActions(context, !a.completion); err != nil {
+	if err := a.applyPreActions(context, !a.completion); err != nil {
 		return "", err
 	}
 
@@ -225,7 +225,7 @@ func (a *Application) Parse(args []string) (command string, err error) {
 		}
 	}
 
-	if err = a.applyPostActions(context); err != nil {
+	if err := a.applyPostActions(context); err != nil {
 		return "", err
 	}
 
