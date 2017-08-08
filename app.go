@@ -332,12 +332,12 @@ func (a *Application) init() error {
 	// If we have subcommands, add a help command at the top-level.
 	if a.cmdGroup.have() {
 		var command []string
-		a.HelpCommand = a.Command("help", "Show help.").PreAction(func(context *ParseContext) error {
+		a.HelpCommand = a.Command("help", "Show help for a command.").PreAction(func(context *ParseContext) error {
 			a.Usage(command)
 			a.terminate(0)
 			return nil
 		})
-		a.HelpCommand.Arg("command", "Show help on command.").StringsVar(&command)
+		a.HelpCommand.Arg("command", "Show help for a command.").StringsVar(&command)
 		// Make help first command.
 		l := len(a.commandOrder)
 		a.commandOrder = append(a.commandOrder[l-1:l], a.commandOrder[:l-1]...)
