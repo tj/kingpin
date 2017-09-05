@@ -40,6 +40,7 @@ var DefaultUsageTemplate = `{{define "FormatCommand"}}\
 {{if .Context.SelectedCommand}}\
 {{if len .Context.SelectedCommand.Commands}}\
   {{"Subcommands:" | bold}}
+
 {{template "FormatCommands" .Context.SelectedCommand}}
 {{end}}\
 {{else if .App.Commands}}\
