@@ -9,7 +9,7 @@ var DefaultUsageTemplate = `{{define "FormatCommand"}}\
 {{define "FormatCommands"}}\
 {{range .FlattenedCommands}}\
 {{if not .Hidden}}\
-    {{printf "%-15s %s" .FullCommand .Help}}
+    {{printf "%-20s %s" .FullCommand .Help}}
 {{end}}\
 {{end}}\
 {{end}}\
