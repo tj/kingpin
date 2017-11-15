@@ -162,7 +162,7 @@ func (a *Application) UsageForContextWithTemplate(context *ParseContext, indent 
 		"ArgsToTwoColumns": func(a []*ArgModel) [][2]string {
 			rows := [][2]string{}
 			for _, arg := range a {
-				s := "<" + arg.Name + ">"
+				s := "  <" + arg.Name + ">"
 				if !arg.Required {
 					s = "[" + s + "]"
 				}

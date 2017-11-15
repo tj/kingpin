@@ -35,7 +35,7 @@ var DefaultUsageTemplate = `{{define "FormatCommand"}}\
 {{if .Context.Args}}\
   {{"Args:" | bold}}
 
-  {{.Context.Args|ArgsToTwoColumns|FormatTwoColumns}}
+{{.Context.Args|ArgsToTwoColumns|FormatTwoColumns}}
 {{end}}\
 {{if .Context.SelectedCommand}}\
 {{if len .Context.SelectedCommand.Commands}}\
