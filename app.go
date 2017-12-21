@@ -41,7 +41,7 @@ type Application struct {
 	// Help flag. Exposed for user customisation.
 	HelpFlag *FlagClause
 	// Help command. Exposed for user customisation. May be nil.
-	HelpCommand *CmdClause
+	HelpCommand *Cmd
 	// Version flag. Exposed for user customisation. May be nil.
 	VersionFlag *FlagClause
 }
@@ -302,7 +302,7 @@ func (a *Application) PostAction(action Action) *Application {
 }
 
 // Command adds a new top-level command.
-func (a *Application) Command(name, help string) *CmdClause {
+func (a *Application) Command(name, help string) *Cmd {
 	return a.addCommand(name, help)
 }
 
@@ -368,7 +368,7 @@ func (a *Application) init() error {
 }
 
 // Recursively check commands for duplicate flags.
-func checkDuplicateFlags(current *CmdClause, flagGroups []*flagGroup) error {
+func checkDuplicateFlags(current *Cmd, flagGroups []*flagGroup) error {
 	// Check for duplicates.
 	for _, flags := range flagGroups {
 		for _, flag := range current.flagOrder {
@@ -487,7 +487,7 @@ func (a *Application) validateRequired(context *ParseContext) error {
 func (a *Application) setValues(context *ParseContext) (selected []string, err error) {
 	// Set all arg and flag values.
 	var (
-		lastCmd *CmdClause
+		lastCmd *Cmd
 		flagSet = map[string]struct{}{}
 	)
 	for _, element := range context.Elements {
@@ -508,7 +508,7 @@ func (a *Application) setValues(context *ParseContext) (selected []string, err e
 				return
 			}
 
-		case *CmdClause:
+		case *Cmd:
 			if clause.validator != nil {
 				if err = clause.validator(clause); err != nil {
 					return
@@ -529,7 +529,7 @@ func (a *Application) setValues(context *ParseContext) (selected []string, err e
 func (a *Application) applyValidators(context *ParseContext) (err error) {
 	// Call command validation functions.
 	for _, element := range context.Elements {
-		if cmd, ok := element.Clause.(*CmdClause); ok && cmd.validator != nil {
+		if cmd, ok := element.Clause.(*Cmd); ok && cmd.validator != nil {
 			if err = cmd.validator(cmd); err != nil {
 				return err
 			}

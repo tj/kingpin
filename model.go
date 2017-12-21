@@ -210,7 +210,7 @@ func (c *cmdGroup) Model() *CmdGroupModel {
 	return m
 }
 
-func (c *CmdClause) Model() *CmdModel {
+func (c *Cmd) Model() *CmdModel {
 	depth := 0
 	for i := c; i != nil; i = i.parent {
 		depth++

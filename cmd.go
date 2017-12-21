@@ -49,7 +49,7 @@ func (c *cmdMixin) CmdCompletion(context *ParseContext) []string {
 			if el.Value != nil && *el.Value != "" {
 				argsSatisfied++
 			}
-		case *CmdClause:
+		case *Cmd:
 			options = append(options, clause.completionAlts...)
 		default:
 		}
@@ -115,12 +115,12 @@ func (c *cmdMixin) FlagCompletion(flagName string, flagValue string) (choices []
 
 type cmdGroup struct {
 	app          *Application
-	parent       *CmdClause
-	commands     map[string]*CmdClause
-	commandOrder []*CmdClause
+	parent       *Cmd
+	commands     map[string]*Cmd
+	commandOrder []*Cmd
 }
 
-func (c *cmdGroup) defaultSubcommand() *CmdClause {
+func (c *cmdGroup) defaultSubcommand() *Cmd {
 	for _, cmd := range c.commandOrder {
 		if cmd.isDefault {
 			return cmd
@@ -141,18 +141,18 @@ func (c *cmdGroup) cmdNames() []string {
 //
 // This allows existing commands to be modified after definition but before parsing. Useful for
 // modular applications.
-func (c *cmdGroup) GetCommand(name string) *CmdClause {
+func (c *cmdGroup) GetCommand(name string) *Cmd {
 	return c.commands[name]
 }
 
 func newCmdGroup(app *Application) *cmdGroup {
 	return &cmdGroup{
 		app:      app,
-		commands: make(map[string]*CmdClause),
+		commands: make(map[string]*Cmd),
 	}
 }
 
-func (c *cmdGroup) flattenedCommands() (out []*CmdClause) {
+func (c *cmdGroup) flattenedCommands() (out []*Cmd) {
 	for _, cmd := range c.commandOrder {
 		if len(cmd.commands) == 0 {
 			out = append(out, cmd)
@@ -162,7 +162,7 @@ func (c *cmdGroup) flattenedCommands() (out []*CmdClause) {
 	return
 }
 
-func (c *cmdGroup) addCommand(name, help string) *CmdClause {
+func (c *cmdGroup) addCommand(name, help string) *Cmd {
 	cmd := newCommand(c.app, name, help)
 	c.commands[name] = cmd
 	c.commandOrder = append(c.commandOrder, cmd)
@@ -203,24 +203,24 @@ func (c *cmdGroup) have() bool {
 	return len(c.commands) > 0
 }
 
-type CmdClauseValidator func(*CmdClause) error
+type CmdValidator func(*Cmd) error
 
-// A CmdClause is a single top-level command. It encapsulates a set of flags
+// A Cmd is a single top-level command. It encapsulates a set of flags
 // and either subcommands or positional arguments.
-type CmdClause struct {
+type Cmd struct {
 	cmdMixin
 	app            *Application
 	name           string
 	aliases        []string
 	help           string
 	isDefault      bool
-	validator      CmdClauseValidator
+	validator      CmdValidator
 	hidden         bool
 	completionAlts []string
 }
 
-func newCommand(app *Application, name, help string) *CmdClause {
-	c := &CmdClause{
+func newCommand(app *Application, name, help string) *Cmd {
+	c := &Cmd{
 		app:  app,
 		name: name,
 		help: help,
@@ -232,18 +232,18 @@ func newCommand(app *Application, name, help string) *CmdClause {
 }
 
 // Add an Alias for this command.
-func (c *CmdClause) Alias(name string) *CmdClause {
+func (c *Cmd) Alias(name string) *Cmd {
 	c.aliases = append(c.aliases, name)
 	return c
 }
 
 // Validate sets a validation function to run when parsing.
-func (c *CmdClause) Validate(validator CmdClauseValidator) *CmdClause {
+func (c *Cmd) Validate(validator CmdValidator) *Cmd {
 	c.validator = validator
 	return c
 }
 
-func (c *CmdClause) FullCommand() string {
+func (c *Cmd) FullCommand() string {
 	out := []string{c.name}
 	for p := c.parent; p != nil; p = p.parent {
 		out = append([]string{p.name}, out...)
@@ -252,29 +252,29 @@ func (c *CmdClause) FullCommand() string {
 }
 
 // Command adds a new sub-command.
-func (c *CmdClause) Command(name, help string) *CmdClause {
+func (c *Cmd) Command(name, help string) *Cmd {
 	cmd := c.addCommand(name, help)
 	cmd.parent = c
 	return cmd
 }
 
 // Default makes this command the default if commands don't match.
-func (c *CmdClause) Default() *CmdClause {
+func (c *Cmd) Default() *Cmd {
 	c.isDefault = true
 	return c
 }
 
-func (c *CmdClause) Action(action Action) *CmdClause {
+func (c *Cmd) Action(action Action) *Cmd {
 	c.addAction(action)
 	return c
 }
 
-func (c *CmdClause) PreAction(action Action) *CmdClause {
+func (c *Cmd) PreAction(action Action) *Cmd {
 	c.addPreAction(action)
 	return c
 }
 
-func (c *CmdClause) init() error {
+func (c *Cmd) init() error {
 	if err := c.flagGroup.init(c.app.defaultEnvarPrefix()); err != nil {
 		return err
 	}
@@ -290,7 +290,7 @@ func (c *CmdClause) init() error {
 	return nil
 }
 
-func (c *CmdClause) Hidden() *CmdClause {
+func (c *Cmd) Hidden() *Cmd {
 	c.hidden = true
 	return c
 }

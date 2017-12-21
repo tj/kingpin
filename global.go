@@ -17,7 +17,7 @@ var (
 )
 
 // Command adds a new command to the default parser.
-func Command(name, help string) *CmdClause {
+func Command(name, help string) *Cmd {
 	return CommandLine.Command(name, help)
 }
 

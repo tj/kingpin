@@ -76,7 +76,7 @@ func (t *Token) String() string {
 
 // A union of possible elements in a parse stack.
 type ParseElement struct {
-	// Clause is either *CmdClause, *ArgClause or *FlagClause.
+	// Clause is either *Cmd, *ArgClause or *FlagClause.
 	Clause interface{}
 	// Value is corresponding value for an ArgClause or FlagClause (if any).
 	Value *string
@@ -84,10 +84,10 @@ type ParseElement struct {
 
 // ParseContext holds the current context of the parser. When passed to
 // Action() callbacks Elements will be fully populated with *FlagClause,
-// *ArgClause and *CmdClause values and their corresponding arguments (if
+// *ArgClause and *Cmd values and their corresponding arguments (if
 // any).
 type ParseContext struct {
-	SelectedCommand *CmdClause
+	SelectedCommand *Cmd
 	ignoreDefault   bool
 	argsOnly        bool
 	peek            []*Token
@@ -257,7 +257,7 @@ func (p *ParseContext) matchedArg(arg *ArgClause, value string) {
 	p.Elements = append(p.Elements, &ParseElement{Clause: arg, Value: &value})
 }
 
-func (p *ParseContext) matchedCmd(cmd *CmdClause) {
+func (p *ParseContext) matchedCmd(cmd *Cmd) {
 	p.Elements = append(p.Elements, &ParseElement{Clause: cmd})
 	p.mergeFlags(cmd.flagGroup)
 	p.mergeArgs(cmd.argGroup)
