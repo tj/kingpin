@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/alecthomas/assert"
+	"github.com/tj/assert"
 )
 
 func TestFormatTwoColumns(t *testing.T) {
