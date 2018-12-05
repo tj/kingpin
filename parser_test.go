@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/alecthomas/assert"
+	"github.com/tj/assert"
 )
 
 func TestParserExpandFromFile(t *testing.T) {

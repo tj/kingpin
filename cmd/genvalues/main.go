@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/alecthomas/template"
+	"text/template"
 )
 
 const (
