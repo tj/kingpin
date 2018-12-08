@@ -3,7 +3,7 @@ package kingpin
 import (
 	"testing"
 
-	"github.com/tj/assert"
+	"github.com/alecthomas/assert"
 )
 
 func TestResolveWithBuiltin(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/tj/assert"
+	"github.com/alecthomas/assert"
 
 	"testing"
 )

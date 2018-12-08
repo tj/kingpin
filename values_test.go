@@ -3,7 +3,7 @@ package kingpin
 import (
 	"net"
 
-	"github.com/tj/assert"
+	"github.com/alecthomas/assert"
 
 	"testing"
 )
