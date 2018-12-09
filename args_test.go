@@ -2,10 +2,10 @@ package kingpin
 
 import (
 	"io/ioutil"
-	"os"
 	"testing"
+	"os"
 
-	"github.com/tj/assert"
+	"github.com/alecthomas/assert"
 )
 
 func TestArgRemainder(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"io"
 	"strings"
 
-	"text/template"
+	"github.com/alecthomas/template"
 )
 
 var (

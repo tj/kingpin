@@ -3,7 +3,7 @@ package kingpin
 import (
 	"io/ioutil"
 
-	"github.com/tj/assert"
+	"github.com/alecthomas/assert"
 
 	"sort"
 	"strings"

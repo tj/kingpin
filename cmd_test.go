@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/tj/assert"
+	"github.com/alecthomas/assert"
 
 	"testing"
 )

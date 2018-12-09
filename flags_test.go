@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/tj/assert"
+	"github.com/alecthomas/assert"
 
 	"testing"
 )
